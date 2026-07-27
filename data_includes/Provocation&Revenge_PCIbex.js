@@ -272,6 +272,9 @@ const NOMINATIVE_NP_OVERRIDES = {
   "male|den herren": "Der Herr",
   "male|dem herren": "Der Herr",
 
+  "male|den herrn": "Der Herr",
+  "male|dem herrn": "Der Herr",
+
   "male|den interessenten": "Der Interessent",
   "male|dem interessenten": "Der Interessent",
 
