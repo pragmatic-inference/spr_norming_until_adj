@@ -19,6 +19,7 @@ PennController.ResetPrefix(null);
 
 const DATA_FILE = "sentences_mvb_8_versions.csv";
 const RESPONSE_TIMEOUT_MS = 30000;
+const CHOICE_FEEDBACK_MS = 200;
 const INTER_TRIAL_INTERVAL_MS = 300;
 
 // Replace this with the completion code for the new Prolific study.
@@ -107,6 +108,9 @@ Header(
 
       .norming-answer-option {
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 380px;
         min-height: 92px;
         padding: 12px 22px;
@@ -116,10 +120,10 @@ Header(
         text-align: center;
       }
 
-      .norming-answer-key {
-        margin-bottom: 7px;
-        font-size: 21px;
-        font-weight: 700;
+      .norming-answer-option.norming-answer-selected {
+        border-color: #245a9a;
+        background: #eaf2fb;
+        box-shadow: 0 0 0 2px rgba(36, 90, 154, 0.18);
       }
 
       .norming-answer-text {
@@ -1100,6 +1104,25 @@ function recordChoice(
     );
 }
 
+function showChoiceFeedback(
+  uid,
+  side
+) {
+  const answerElement =
+    document.getElementById(
+      "norming-answer-" +
+      side +
+      "-" +
+      uid
+    );
+
+  if (answerElement) {
+    answerElement.classList.add(
+      "norming-answer-selected"
+    );
+  }
+}
+
 function finalizeTrialState(
   stateKey
 ) {
@@ -1242,8 +1265,9 @@ function createNormingChoiceTrial(
     newText(
       leftAnswerName,
       (
-        '<div class="norming-answer-option">' +
-        '<div class="norming-answer-key">F</div>' +
+        '<div id="norming-answer-left-' +
+        uid +
+        '" class="norming-answer-option">' +
         '<div class="norming-answer-text">' +
         escapeHTML(leftText) +
         "</div></div>"
@@ -1256,8 +1280,9 @@ function createNormingChoiceTrial(
     newText(
       rightAnswerName,
       (
-        '<div class="norming-answer-option">' +
-        '<div class="norming-answer-key">J</div>' +
+        '<div id="norming-answer-right-' +
+        uid +
+        '" class="norming-answer-option">' +
         '<div class="norming-answer-text">' +
         escapeHTML(rightText) +
         "</div></div>"
@@ -1327,6 +1352,16 @@ function createNormingChoiceTrial(
           rightKeyName
         ).disable(),
 
+        newFunction(
+          "feedback_left_" + uid,
+          function () {
+            showChoiceFeedback(
+              uid,
+              "left"
+            );
+          }
+        ).call(),
+
         getTimer(
           timerName
         ).stop()
@@ -1359,6 +1394,16 @@ function createNormingChoiceTrial(
         getKey(
           rightKeyName
         ).disable(),
+
+        newFunction(
+          "feedback_right_" + uid,
+          function () {
+            showChoiceFeedback(
+              uid,
+              "right"
+            );
+          }
+        ).call(),
 
         getTimer(
           timerName
@@ -1417,6 +1462,13 @@ function createNormingChoiceTrial(
         );
       }
     ).call(),
+
+    newTimer(
+      "feedback_" + uid,
+      CHOICE_FEEDBACK_MS
+    )
+      .start()
+      .wait(),
 
     clear(),
 
