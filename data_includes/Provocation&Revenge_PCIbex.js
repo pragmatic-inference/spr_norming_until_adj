@@ -1811,7 +1811,7 @@ newTrial(
     .css({
       "font-size": "26px",
       "line-height": "1.6",
-      "text-align": "center"
+      "text-align": "left"
     })
     .cssContainer({
       width: "900px",
