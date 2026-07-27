@@ -1244,7 +1244,18 @@ function createNormingChoiceTrial(
         ) +
         "</div>"
       )
-    ).print(),
+    )
+      .cssContainer({
+        width: "1000px",
+        "max-width": "90vw"
+      })
+      .css({
+        display: "block",
+        width: "100%",
+        "text-align": "center"
+      })
+      .center()
+      .print(),
 
     newText(
       "question_" + uid,
@@ -1255,7 +1266,18 @@ function createNormingChoiceTrial(
         ) +
         "</div>"
       )
-    ).print(),
+    )
+      .cssContainer({
+        width: "1000px",
+        "max-width": "90vw"
+      })
+      .css({
+        display: "block",
+        width: "100%",
+        "text-align": "center"
+      })
+      .center()
+      .print(),
 
     newTimer(
       timerName,
@@ -1322,7 +1344,18 @@ function createNormingChoiceTrial(
         "J für die rechte Interpretation." +
         "</div>"
       )
-    ).print(),
+    )
+      .cssContainer({
+        width: "1000px",
+        "max-width": "90vw"
+      })
+      .css({
+        display: "block",
+        width: "100%",
+        "text-align": "center"
+      })
+      .center()
+      .print(),
 
     newKey(
       leftKeyName,
