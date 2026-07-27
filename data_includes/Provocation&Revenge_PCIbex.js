@@ -18,6 +18,9 @@ PennController.ResetPrefix(null);
 // ============================================================
 
 const DATA_FILE = "sentences_mvb_8_versions.csv";
+// Temporary: set to false before collecting the full study.
+const DEMO_MODE = true;
+const DEMO_ITEM_LIMIT = 5;
 const RESPONSE_TIMEOUT_MS = 30000;
 const CHOICE_FEEDBACK_MS = 200;
 const INTER_TRIAL_INTERVAL_MS = 300;
@@ -1531,6 +1534,17 @@ function createNormingChoiceTrial(
         : 0
     )
     .log(
+      "run_mode",
+      config.runMode || ""
+    )
+    .log(
+      "planned_critical_trials",
+      config.plannedCriticalTrials ==
+        null
+        ? ""
+        : config.plannedCriticalTrials
+    )
+    .log(
       "trial_position",
       config.trialPosition == null
         ? ""
@@ -2213,9 +2227,17 @@ Template(
     const listId =
       globalSeed % 4;
 
+    const activeItemKeys =
+      DEMO_MODE
+        ? itemKeys.slice(
+            0,
+            DEMO_ITEM_LIMIT
+          )
+        : itemKeys;
+
     const selectedRows = [];
 
-    itemKeys.forEach(
+    activeItemKeys.forEach(
       function (
         itemKey,
         itemIndex
@@ -2349,6 +2371,14 @@ Template(
 
               isCritical:
                 true,
+
+              runMode:
+                DEMO_MODE
+                  ? "demo"
+                  : "full",
+
+              plannedCriticalTrials:
+                activeItemKeys.length,
 
               trialPosition:
                 positionIndex + 1,
