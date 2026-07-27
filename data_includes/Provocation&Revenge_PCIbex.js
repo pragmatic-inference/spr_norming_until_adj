@@ -27,7 +27,7 @@ const INTER_TRIAL_INTERVAL_MS = 300;
 
 // Replace this with the completion code for the new Prolific study.
 const confirmationLink =
-  "https://app.prolific.com/submissions/complete?cc=CNAM6AA1";
+  "https://app.prolific.com/submissions/complete?cc=C30QZKIB";
 
 // ============================================================
 // PARTICIPANT IDS AND TIMING
