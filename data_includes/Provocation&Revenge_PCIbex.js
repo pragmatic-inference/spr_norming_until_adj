@@ -712,6 +712,11 @@ function getNormingMaterials(row) {
       ? row["NP2 - male"]
       : row["NP2 - female"];
 
+  const sourceSentence =
+    cleanCell(
+      row["Generated-Sentence"]
+    );
+
   const sentence =
     buildTestSentence(row);
 
@@ -773,6 +778,7 @@ function getNormingMaterials(row) {
 
   return {
     sentence,
+    sourceSentence,
     question,
     np1Text,
     np2Text,
@@ -1441,8 +1447,19 @@ function createNormingChoiceTrial(
     )
     .log(
       "trial_position",
-      config.trialPosition ||
-        ""
+      config.trialPosition == null
+        ? ""
+        : config.trialPosition
+    )
+    .log(
+      "state_key",
+      stateKey
+    )
+    .log(
+      "random_seed",
+      config.randomSeed == null
+        ? ""
+        : config.randomSeed
     )
     .log(
       "latin_list",
@@ -1509,6 +1526,11 @@ function createNormingChoiceTrial(
     .log(
       "sentence",
       config.sentence
+    )
+    .log(
+      "source_sentence",
+      config.sourceSentence ||
+        config.sentence
     )
     .log(
       "question",
@@ -1813,6 +1835,11 @@ createNormingChoiceTrial(
       "practice_1",
 
     sentence:
+      "Die Fotografin traf " +
+      "die Redakteurin, weil sie " +
+      "am Nachmittag sehr beschäftigt war.",
+
+    sourceSentence:
       "Die Fotografin traf " +
       "die Redakteurin, weil sie " +
       "am Nachmittag sehr beschäftigt war.",
@@ -2204,6 +2231,10 @@ Template(
               sentence:
                 materials.sentence,
 
+              sourceSentence:
+                materials
+                  .sourceSentence,
+
               question:
                 materials.question,
 
@@ -2239,6 +2270,9 @@ Template(
 
               listId:
                 listId,
+
+              randomSeed:
+                globalSeed,
 
               targetIndex:
                 entry.targetIndex,

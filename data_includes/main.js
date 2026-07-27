@@ -1,7 +1,1 @@
-PennController.ResetPrefix(null)
-
-newTrial(
-    newButton("Hello World")
-        .print()
-        .wait()
-)
+// The experiment is defined in Provocation&Revenge_PCIbex.js.
