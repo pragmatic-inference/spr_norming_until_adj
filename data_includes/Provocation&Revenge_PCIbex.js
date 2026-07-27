@@ -1318,7 +1318,7 @@ function createNormingChoiceTrial(
       "hint_" + uid,
       (
         '<div class="norming-hint">' +
-        "Drücken Sie F für die linke oder " +
+        "Drücken Sie immer F für die linke oder " +
         "J für die rechte Interpretation." +
         "</div>"
       )
