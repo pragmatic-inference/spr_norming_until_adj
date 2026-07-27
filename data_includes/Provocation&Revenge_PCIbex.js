@@ -150,6 +150,78 @@ function stripFinalPunctuation(value) {
     .trim();
 }
 
+function buildTestSentence(row) {
+  const fullSentence =
+    cleanCell(
+      row["Generated-Sentence"]
+    );
+
+  if (!fullSentence) {
+    return "";
+  }
+
+  const conjunctions =
+    fullSentence.match(/\bund\b/gi) || [];
+
+  if (conjunctions.length !== 1) {
+    throw new Error(
+      "Expected exactly one standalone 'und' " +
+      "in Generated-Sentence for list_item=" +
+      cleanCell(row.list_item) +
+      ", generated_version=" +
+      cleanCell(row.generated_version) +
+      ", but found " +
+      conjunctions.length +
+      "."
+    );
+  }
+
+  const conjunctionIndex =
+    fullSentence.search(/\bund\b/i);
+
+  const sentenceWithoutConjunction =
+    stripFinalPunctuation(
+      fullSentence.slice(
+        0,
+        conjunctionIndex
+      )
+    );
+
+  const targetPredicate =
+    stripFinalPunctuation(
+      row["adjective + verb"]
+    );
+
+  if (!targetPredicate) {
+    throw new Error(
+      "Missing adjective + verb for list_item=" +
+      cleanCell(row.list_item) +
+      ", generated_version=" +
+      cleanCell(row.generated_version) +
+      "."
+    );
+  }
+
+  if (
+    !sentenceWithoutConjunction
+      .toLowerCase()
+      .endsWith(
+        targetPredicate.toLowerCase()
+      )
+  ) {
+    throw new Error(
+      "The sentence segment before 'und' does not " +
+      "end with adjective + verb for list_item=" +
+      cleanCell(row.list_item) +
+      ", generated_version=" +
+      cleanCell(row.generated_version) +
+      "."
+    );
+  }
+
+  return sentenceWithoutConjunction + ".";
+}
+
 function capitalizeFirst(value) {
   const text =
     cleanCell(value);
@@ -569,9 +641,7 @@ function getNormingMaterials(row) {
       : row["NP2 - female"];
 
   const sentence =
-    cleanCell(
-      row["Generated-Sentence"]
-    );
+    buildTestSentence(row);
 
   const question =
     buildNormingQuestion(row);
