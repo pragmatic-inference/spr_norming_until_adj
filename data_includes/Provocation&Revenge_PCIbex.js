@@ -19,7 +19,7 @@ PennController.ResetPrefix(null);
 
 const DATA_FILE = "sentences_mvb_8_versions.csv";
 // Temporary: set to false before collecting the full study.
-const DEMO_MODE = true;
+const DEMO_MODE = false;
 const DEMO_ITEM_LIMIT = 5;
 const RESPONSE_TIMEOUT_MS = 30000;
 const CHOICE_FEEDBACK_MS = 200;
